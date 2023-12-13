@@ -40,28 +40,46 @@ export default class AppClass extends React.Component {
     // Use this helper to reset all states to their initial values.
   }
 
-  getNextIndex = (direction) => {
-    const { index } = this.state;
-    const isLeft = direction === 'left' && index % 3 !== 0;
-    const isUp = direction === 'up' && index >= 3;
-    const isRight = direction === 'right' && index % 3 !== 2;
-    const isDown = direction === 'down' && index < 6;
+  getNextIndex = (index,direction) => {
+    console.log("new spot", index);
+    console.log("direction", direction);
+    switch( direction ){
+      case 'up':
+        return (index >= 3) ? index - 3 : index;
+      case 'down':
+        return (index < 6) ? index + 3 : index;
+      case 'left':
+        return (index % 3 !== 0) ? index - 1 : index;
+      case 'right':
+        return ((index + 1) % 3 !== 0) ? index + 1 : index;
+      default:
+        return index;
+    }
+    // const { index } = this.state;
+    // const isLeft = direction === 'left' && index % 3 !== 0;
+    // const isUp = direction === 'up' && index >= 3;
+    // const isRight = direction === 'right' && index % 3 !== 2;
+    // const isDown = direction === 'down' && index < 6;
 
-    if (isLeft) return index - 1;
-    if (isUp) return index - 3;
-    if (isRight) return index + 1;
-    if (isDown) return index + 3;
+    // if (isLeft) return index - 1;
+    // if (isUp) return index - 3;
+    // if (isRight) return index + 1;
+    // if (isDown) return index + 3;
 
-    return index;
+    //return index;
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
   }
 
   move = (evt) => {
+    //const index = evt.target
+    const direction = evt.target.id
     const { steps } = this.state;
-    const newIndex = this.getNextIndex(evt);
+    const newIndex = this.getNextIndex(this.state.index,direction);
     const newSteps = steps + 1;
+
+    console.log("move");
 
     this.setState({
       index: newIndex,
@@ -105,16 +123,16 @@ export default class AppClass extends React.Component {
           <h3 id="message">{message}</h3>
         </div>
         <div id="keypad">
-          <button id="left" onClick={() => this.move('left')}>
+          <button id="left" onClick={(evt) => this.move(evt)}>
             LEFT
           </button>
-          <button id="up" onClick={() => this.move('up')}>
+          <button id="up" onClick={(evt) => this.move(evt)}>
             UP
           </button>
-          <button id="right" onClick={() => this.move('right')}>
+          <button id="right" onClick={(evt) => this.move(evt)}>
             RIGHT
           </button>
-          <button id="down" onClick={() => this.move('down')}>
+          <button id="down" onClick={(evt) => this.move(evt)}>
             DOWN
           </button>
           <button id="reset" onClick={this.reset}>
