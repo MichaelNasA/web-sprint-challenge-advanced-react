@@ -54,6 +54,7 @@ export default class AppClass extends React.Component {
         return ((index + 1) % 3 !== 0) ? index + 1 : index;
       default:
         return index;
+        
     }
     // const { index } = this.state;
     // const isLeft = direction === 'left' && index % 3 !== 0;
@@ -98,7 +99,14 @@ export default class AppClass extends React.Component {
 
   onSubmit = (evt) => {
     evt.preventDefault();
-    console.log(`Email submitted: ${this.state.email}`);
+    fetch.post("http://localhost:9000/api/result", evt)
+    .then( res =>{
+      this.setState({onSubmit: res.data})
+    })
+    .catch(err =>{
+      console.log("Not a valid email",err)
+    })
+    //console.log(`Email submitted: ${this.state.email}`);
     // Use a POST request to send a payload to the server.
   }
 
