@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 
 // Suggested initial states
 const initialMessage = ''
@@ -20,16 +21,19 @@ export default class AppClass extends React.Component {
 
   getXY = () => {
     const { index } = this.state;
-    const x = index % 3; 
-    const y = Math.floor(index / 3);
-    return { x, y };
+    const x = (index % 3) + 1; 
+    let y
+    if(index < 3) y =1
+      else if (index < 6) y=2
+      else if (index < 9) y=3
+    return [ x, y ];
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
   }
 
   getXYMessage = () => {
-    const { x, y } = this.getXY();
-    return `Coordinates (${x + 1}, ${y + 1})`;
+    const [ x, y ] = this.getXY();
+    return `Coordinates (${x}, ${y})`;
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
@@ -40,7 +44,8 @@ export default class AppClass extends React.Component {
     // Use this helper to reset all states to their initial values.
   }
 
-  getNextIndex = (index,direction) => {
+  getNextIndex = (direction) => {
+    const {index} = this.state
     console.log("new spot", index);
     console.log("direction", direction);
     switch( direction ){
@@ -85,7 +90,7 @@ export default class AppClass extends React.Component {
     this.setState({
       index: newIndex,
       steps: newSteps,
-      message: `Moved ${evt}`,
+      message: `Moved ${direction}`,
     });
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
@@ -98,14 +103,27 @@ export default class AppClass extends React.Component {
   }
 
   onSubmit = (evt) => {
+    //const email = evt.target.email.value;
     evt.preventDefault();
-    fetch.post("http://localhost:9000/api/result", evt)
-    .then( res =>{
-      this.setState({onSubmit: res.data})
-    })
-    .catch(err =>{
-      console.log("Not a valid email",err)
-    })
+    // const [X,Y] = this.getXY()
+    // const {email, steps} = this.state
+    axios.post("http://localhost:9000/api/result", {
+      email: this.state.email,
+        x: this.getXY()[0],
+        y: this.getXY()[1],
+        steps: this.state.steps,
+        })
+        .then((res) => {
+          this.setState({ message: res.data.message });
+        })
+        .catch((err) => {
+          console.log("Error:", err);
+          if (err.response && err.response.data) {
+            this.setState({ message: err.response.data.message });
+          } else {
+            this.setState({ message: "An unexpected error occurred." });
+          }
+        })
     //console.log(`Email submitted: ${this.state.email}`);
     // Use a POST request to send a payload to the server.
   }
