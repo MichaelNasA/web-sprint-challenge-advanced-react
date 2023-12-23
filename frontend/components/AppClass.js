@@ -15,7 +15,7 @@ const initialState = {
 }
 
 export default class AppClass extends React.Component {
-  state = { ...initialState };
+  state = initialState;
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
@@ -82,7 +82,7 @@ export default class AppClass extends React.Component {
     //const index = evt.target
     const direction = evt.target.id
     const { steps } = this.state;
-    const newIndex = this.getNextIndex(this.state.index,direction);
+    const newIndex = this.getNextIndex(direction);
     const newSteps = steps + 1;
 
     console.log("move");
@@ -105,13 +105,10 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     //const email = evt.target.email.value;
     evt.preventDefault();
-    // const [X,Y] = this.getXY()
-    // const {email, steps} = this.state
+    const [X,Y] = this.getXY()
+    const {email, steps} = this.state
     axios.post("http://localhost:9000/api/result", {
-      email: this.state.email,
-        x: this.getXY()[0],
-        y: this.getXY()[1],
-        steps: this.state.steps,
+        email,steps,X,Y
         })
         .then((res) => {
           this.setState({ message: res.data.message });
@@ -130,7 +127,7 @@ export default class AppClass extends React.Component {
 
   render() {
     const { className } = this.props;
-    const { steps, message } = this.state;
+    const { steps, message, index, email } = this.state;
 
     return (
       <div id="wrapper" className={className}>
@@ -140,8 +137,8 @@ export default class AppClass extends React.Component {
         </div>
         <div id="grid">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
-            <div key={idx} className={`square${idx === this.state.index ? ' active' : ''}`}>
-              {idx === this.state.index ? 'B' : null}
+            <div key={idx} className={`square${idx === index ? ' active' : ''}`}>
+              {idx === index ? 'B' : null}
             </div>
           ))}
         </div>
@@ -149,7 +146,7 @@ export default class AppClass extends React.Component {
           <h3 id="message">{message}</h3>
         </div>
         <div id="keypad">
-          <button id="left" onClick={(evt) => this.move(evt)}>
+          <button id="left" onClick={(evt) =>this.move(evt)}>
             LEFT
           </button>
           <button id="up" onClick={(evt) => this.move(evt)}>
@@ -166,7 +163,7 @@ export default class AppClass extends React.Component {
           </button>
         </div>
         <form onSubmit={this.onSubmit}>
-          <input id="email" type="email" placeholder="type email" onChange={this.onChange} value={this.state.email} />
+          <input id="email" type="email" value={email} placeholder="type email" onChange={this.onChange}/>
           <input id="submit" type="submit" />
         </form>
       </div>
