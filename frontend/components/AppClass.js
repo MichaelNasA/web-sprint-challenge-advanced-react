@@ -105,10 +105,10 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     //const email = evt.target.email.value;
     evt.preventDefault();
-    const [X,Y] = this.getXY()
+    const [x,y] = this.getXY()
     const {email, steps} = this.state
     axios.post("http://localhost:9000/api/result", {
-        email,steps,X,Y
+        email,steps,x,y
         })
         .then((res) => {
           this.setState({ message: res.data.message });
