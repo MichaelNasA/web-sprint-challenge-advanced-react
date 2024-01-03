@@ -46,7 +46,7 @@ export default class AppClass extends React.Component {
 
   getNextIndex = (direction) => {
     const {index} = this.state
-    console.log("new spot", index);
+    console.log("current spot", index);
     console.log("direction", direction);
     switch( direction ){
       case 'up':
@@ -58,8 +58,7 @@ export default class AppClass extends React.Component {
       case 'right':
         return ((index + 1) % 3 !== 0) ? index + 1 : index;
       default:
-        return index;
-        
+        return;  
     }
     // const { index } = this.state;
     // const isLeft = direction === 'left' && index % 3 !== 0;
@@ -83,15 +82,29 @@ export default class AppClass extends React.Component {
     const direction = evt.target.id
     const { steps } = this.state;
     const newIndex = this.getNextIndex(direction);
-    const newSteps = steps + 1;
+    if(newIndex === this.state.index){
+      this.setState({
+        ...this.state,
+        message: `You can't go ${direction}`,
+      })
+      // can't move 
+    } else {
+      this.setState({
+        ...this.state,
+        index: newIndex,
+        steps: steps + 1,
+        message: `Moved ${direction}`,
+      });
+      // can move
+    }
 
     console.log("move");
 
-    this.setState({
-      index: newIndex,
-      steps: newSteps,
-      message: `Moved ${direction}`,
-    });
+    // this.setState({
+    //   index: newIndex,
+    //   //steps: newSteps,
+    //   message: `Moved ${direction}`,
+    // });
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
   }
