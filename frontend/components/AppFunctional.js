@@ -83,21 +83,25 @@ export default function AppFunctional(props) {
 
   function onSubmit(evt) {
     evt.preventDefault();
+    //const { email, steps } = state; // Destructure email and steps from state
     const [x, y] = getXY();
     axios.post("http://localhost:9000/api/result", {
-      email,steps,x,y
-      })
+      email,
+      steps,
+      x,
+      y,
+    })
       .then((res) => {
-        setMessage(res.data.message)
+        setMessage(res.data.message);
       })
       .catch((err) => {
-        console.log(err)
-        if(err.response && err.data.response){
+        console.log(err);
+        if (err.response && err.response.data) {
           setMessage(err.response.data.message);
         } else {
           setMessage("An unexpected error occurred.");
         }
-      })
+      });
     // Use a POST request to send a payload to the server.
   }
 
