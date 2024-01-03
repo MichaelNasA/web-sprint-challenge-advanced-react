@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 // Suggested initial states
 const initialMessage = ''
@@ -83,6 +84,20 @@ export default function AppFunctional(props) {
   function onSubmit(evt) {
     evt.preventDefault();
     const [x, y] = getXY();
+    axios.post("http://localhost:9000/api/result", {
+      email,steps,x,y
+      })
+      .then((res) => {
+        setMessage(res.data.message)
+      })
+      .catch((err) => {
+        console.log(err)
+        if(err.response && err.data.response){
+          setMessage(err.response.data.message);
+        } else {
+          setMessage("An unexpected error occurred.");
+        }
+      })
     // Use a POST request to send a payload to the server.
   }
 
