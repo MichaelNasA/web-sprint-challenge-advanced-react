@@ -35,7 +35,7 @@ export default function AppFunctional(props) {
 
   function reset() {
     setMessage(initialMessage);
-    //setEmail(initialEmail);
+    setEmail(initialEmail);
     setSteps(initialSteps);
     setIndex(initialIndex);
     
