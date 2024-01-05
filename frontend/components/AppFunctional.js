@@ -92,7 +92,7 @@ export default function AppFunctional(props) {
     })
       .then((res) => {
         setMessage(res.data.message);
-        reset();
+        //reset();
       })
       .catch((err) => {
         console.log(err);
