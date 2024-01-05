@@ -34,9 +34,8 @@ export default function AppFunctional(props) {
   }
 
   function reset() {
-
-    setMessage('');
-    setEmail('');
+    setMessage(initialMessage);
+    setEmail(initialEmail);
     setSteps(initialSteps);
     setIndex(initialIndex);
     // Use this helper to reset all states to their initial values.
@@ -70,7 +69,7 @@ export default function AppFunctional(props) {
     } else {
       setIndex(newIndex);
       setSteps(steps + 1);
-      setMessage(`Moved ${direction}`);
+      setMessage(initialMessage);
     }
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
