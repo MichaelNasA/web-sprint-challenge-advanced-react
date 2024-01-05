@@ -35,9 +35,10 @@ export default function AppFunctional(props) {
 
   function reset() {
     setMessage(initialMessage);
-    setEmail(initialEmail);
+    //setEmail(initialEmail);
     setSteps(initialSteps);
     setIndex(initialIndex);
+    
     // Use this helper to reset all states to their initial values.
   }
 
@@ -92,7 +93,8 @@ export default function AppFunctional(props) {
     })
       .then((res) => {
         setMessage(res.data.message);
-        //reset();
+        setEmail(initialEmail)
+        // reset();
       })
       .catch((err) => {
         console.log(err);
