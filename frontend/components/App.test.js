@@ -25,18 +25,18 @@ test('sanity', () => {
 describe('reset button', () => {
   test('resets state when clicked', () => {
     // Render the component
-    const { getByText, getElementById } = render(<AppFunctional />);
+    const { getByText, getByTestId } = render(<AppFunctional />);
 
     // Interact with the component to change its state
     fireEvent.click(getByText('UP')); // For example, simulate moving UP
 
     // Check if the state is updated
-    expect(getElementById('steps').textContent).toContain('1 times');
+    expect(getByTestId('steps').textContent).toContain('1 times');
 
     // Interact with the reset button
     fireEvent.click(getByText('reset'));
 
     // Check if the state is reset
-    expect(getElementById('steps').textContent).toContain('0 times');
+    expect(getByTestId('steps').textContent).toContain('0 times');
   });
 });
