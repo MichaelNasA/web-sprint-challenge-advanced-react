@@ -19,7 +19,7 @@ import { render, fireEvent } from '@testing-library/react';
 import AppFunctional from './AppFunctional';
 
 test('sanity', () => {
-  expect(true).toBe(false);
+  expect(true).toBe(true);
 });
 
 describe('reset button', () => {
