@@ -62,7 +62,7 @@ export default function AppFunctional(props) {
 
   function move(evt) {
 
-    const direction = evt.target.id;
+    const directio = evt.target.id;
     const newIndex = getNextIndex(direction);
 
     if(newIndex === index ){
